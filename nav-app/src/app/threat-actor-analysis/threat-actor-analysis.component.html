@@ -49,10 +49,12 @@
                                 {{ match.actorCoverage.toFixed(1) }}%
                             </div>
                             <div class="match-count" [title]="'Selected Coverage: ' + match.matchingTechniques.length + ' matching techniques out of ' + selectedTechniques.length + ' total selected'">
-                                {{ match.matchingTechniques.length }}/{{ selectedTechniques.length }}
+                                <span class="count-label">Selected:</span>
+                                <span class="count-numbers">{{ match.matchingTechniques.length }}/{{ selectedTechniques.length }}</span>
                             </div>
                             <div class="actor-count" [title]="'Actor Coverage: ' + match.matchingTechniques.length + ' matching techniques out of ' + match.totalTechniques + ' total techniques used by ' + match.group.name">
-                                {{ match.matchingTechniques.length }}/{{ match.totalTechniques }}
+                                <span class="count-label">Actor:</span>
+                                <span class="count-numbers">{{ match.matchingTechniques.length }}/{{ match.totalTechniques }}</span>
                             </div>
                         </div>
                         <div class="action-buttons">
@@ -98,7 +100,10 @@
                     </div>
 
                     <div class="matching-techniques">
-                        <h4>Matching Techniques ({{ match.matchingTechniques.length }})</h4>
+                        <h4>Techniques Used by Both You and {{ match.group.name }} ({{ match.matchingTechniques.length }})</h4>
+                        <p class="match-explanation">
+                            These are the techniques that both you selected and {{ match.group.name }} is known to use:
+                        </p>
                         <div class="techniques-grid">
                             <div 
                                 *ngFor="let techniqueId of match.matchingTechniques" 

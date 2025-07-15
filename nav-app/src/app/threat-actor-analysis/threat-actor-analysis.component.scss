@@ -100,10 +100,26 @@
                 .match-stats {
                     .match-count {
                         color: #666; // Darker for top match
+                        
+                        .count-label {
+                            color: #4caf50; // Green labels for top match
+                        }
+                        
+                        .count-numbers {
+                            color: #2e7d32; // Darker green numbers for top match
+                        }
                     }
                     
                     .actor-count {
                         color: #888; // Darker for top match
+                        
+                        .count-label {
+                            color: #4caf50; // Green labels for top match
+                        }
+                        
+                        .count-numbers {
+                            color: #2e7d32; // Darker green numbers for top match
+                        }
                     }
                 }
                 
@@ -120,6 +136,10 @@
                 .matching-techniques {
                     h4 {
                         color: #2e7d32; // Green for top match
+                    }
+                    
+                    .match-explanation {
+                        color: #4caf50; // Green for top match
                     }
                     
                     .technique-tag {
@@ -193,12 +213,39 @@
                     font-size: 12px;
                     color: #bbb; // Much lighter for cards 2-10
                     margin-top: 4px;
+                    
+                    .count-label {
+                        font-size: 10px;
+                        color: #999;
+                        margin-right: 4px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                    }
+                    
+                    .count-numbers {
+                        font-family: monospace;
+                        font-weight: bold;
+                    }
                 }
                 
                 .actor-count {
                     font-size: 11px;
                     color: #aaa; // Much lighter for cards 2-10
                     line-height: 1;
+                    margin-top: 2px;
+                    
+                    .count-label {
+                        font-size: 9px;
+                        color: #888;
+                        margin-right: 4px;
+                        text-transform: uppercase;
+                        font-weight: 600;
+                    }
+                    
+                    .count-numbers {
+                        font-family: monospace;
+                        font-weight: bold;
+                    }
                 }
             }
             
@@ -284,9 +331,17 @@
         
         .matching-techniques {
             h4 {
-                margin: 0 0 12px 0;
+                margin: 0 0 8px 0;
                 font-size: 16px;
                 color: #ccc; // Much lighter for cards 2-10
+            }
+            
+            .match-explanation {
+                margin: 0 0 12px 0;
+                font-size: 13px;
+                color: #aaa; // Light explanatory text
+                font-style: italic;
+                line-height: 1.4;
             }
             
             .techniques-grid {
@@ -354,6 +409,14 @@
         .match-count,
         .actor-count {
             color: #bbb;
+            
+            .count-label {
+                color: #888; // Dark theme labels
+            }
+            
+            .count-numbers {
+                color: #ccc; // Dark theme numbers
+            }
         }
         
         .secondary-percentage {
@@ -382,6 +445,12 @@
                 .color-option:hover {
                     border-color: #fff;
                 }
+            }
+        }
+        
+        .matching-techniques {
+            .match-explanation {
+                color: #888; // Dark theme explanation text
             }
         }
         
