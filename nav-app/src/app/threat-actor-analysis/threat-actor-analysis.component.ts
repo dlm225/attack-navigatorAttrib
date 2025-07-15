@@ -7,8 +7,9 @@ import { Group } from '../classes/stix/group';
 export interface ThreatActorMatch {
     group: Group;
     matchingTechniques: string[];
-    matchPercentage: number;
-    totalTechniques: number;
+    selectedCoverage: number;  // % of selected techniques this actor covers
+    actorCoverage: number;     // % of actor's techniques that are selected
+    totalTechniques: number;   // Total techniques the actor uses
 }
 
 @Component({
@@ -50,13 +51,16 @@ export class ThreatActorAnalysisComponent {
         const threatActorMatches = this.calculateThreatActorMatches();
         console.log('Threat actor matches found:', threatActorMatches.length);
         
-        // Sort by match percentage (descending) then by absolute count (descending)
+        // Sort by selected coverage (descending), then by absolute count (descending), then by actor coverage
         this.topThreatActors = threatActorMatches
             .sort((a, b) => {
-                if (b.matchPercentage !== a.matchPercentage) {
-                    return b.matchPercentage - a.matchPercentage;
+                if (b.selectedCoverage !== a.selectedCoverage) {
+                    return b.selectedCoverage - a.selectedCoverage;
                 }
-                return b.matchingTechniques.length - a.matchingTechniques.length;
+                if (b.matchingTechniques.length !== a.matchingTechniques.length) {
+                    return b.matchingTechniques.length - a.matchingTechniques.length;
+                }
+                return b.actorCoverage - a.actorCoverage;
             })
             .slice(0, 10);
 
@@ -146,14 +150,20 @@ export class ThreatActorAnalysisComponent {
             );
 
             if (matchingTechniques.length > 0) {
-                const matchPercentage = (matchingTechniques.length / groupTechniques.length) * 100;
+                // Primary: % of selected techniques this actor covers
+                const selectedCoverage = (matchingTechniques.length / this.selectedTechniques.length) * 100;
+                
+                // Secondary: % of actor's techniques that are selected  
+                const actorCoverage = (matchingTechniques.length / groupTechniques.length) * 100;
                 
                 console.log(`Group ${group.name} has ${matchingTechniques.length} matching techniques:`, matchingTechniques);
+                console.log(`Selected coverage: ${selectedCoverage.toFixed(1)}%, Actor coverage: ${actorCoverage.toFixed(1)}%`);
                 
                 matches.push({
                     group: group,
                     matchingTechniques: matchingTechniques,
-                    matchPercentage: matchPercentage,
+                    selectedCoverage: selectedCoverage,
+                    actorCoverage: actorCoverage,
                     totalTechniques: groupTechniques.length
                 });
             }

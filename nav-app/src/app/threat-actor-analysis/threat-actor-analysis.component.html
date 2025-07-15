@@ -38,8 +38,22 @@
                             <p class="threat-actor-id">{{ match.group.attackID }}</p>
                         </div>
                         <div class="match-stats">
-                            <div class="match-percentage">{{ match.matchPercentage.toFixed(1) }}%</div>
-                            <div class="match-count">{{ match.matchingTechniques.length }}/{{ match.totalTechniques }}</div>
+                            <div 
+                                class="primary-percentage"
+                                [title]="'Covers ' + match.selectedCoverage.toFixed(1) + '% of your selected techniques'">
+                                {{ match.selectedCoverage.toFixed(1) }}%
+                            </div>
+                            <div 
+                                class="secondary-percentage"
+                                [title]="match.actorCoverage.toFixed(1) + '% of this actor\'s techniques are selected'">
+                                {{ match.actorCoverage.toFixed(1) }}%
+                            </div>
+                            <div class="match-count" [title]="'Matching techniques out of total selected'">
+                                {{ match.matchingTechniques.length }}/{{ selectedTechniques.length }}
+                            </div>
+                            <div class="actor-count" [title]="'Matching techniques out of actor\'s total techniques'">
+                                {{ match.matchingTechniques.length }}/{{ match.totalTechniques }}
+                            </div>
                         </div>
                     </div>
 

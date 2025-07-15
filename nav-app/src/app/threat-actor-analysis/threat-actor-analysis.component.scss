@@ -130,17 +130,33 @@
             .match-stats {
                 text-align: right;
                 flex-shrink: 0;
+                min-width: 120px;
                 
-                .match-percentage {
+                .primary-percentage {
                     font-size: 24px;
                     font-weight: bold;
                     color: #4caf50;
                     line-height: 1;
                 }
                 
+                .secondary-percentage {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #2196F3;
+                    line-height: 1.2;
+                    margin-top: 2px;
+                }
+                
                 .match-count {
                     font-size: 12px;
                     color: #666;
+                    margin-top: 4px;
+                }
+                
+                .actor-count {
+                    font-size: 11px;
+                    color: #999;
+                    line-height: 1;
                 }
             }
         }
@@ -241,8 +257,13 @@
         }
         
         .threat-actor-id,
-        .match-count {
+        .match-count,
+        .actor-count {
             color: #bbb;
+        }
+        
+        .secondary-percentage {
+            color: #64b5f6;
         }
         
         .threat-actor-description {
