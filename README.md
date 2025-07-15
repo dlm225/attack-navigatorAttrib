@@ -1,3 +1,23 @@
+# ATT&CK® Navigator - Threat Hunting Attribution (currently v0.0.1)
+
+This project is a fork of the official ATT&CK® Navigator with a little extra code that adds a "Threat Actor Analysis" button in the Layer Controls tab. One of the first things to aim for in a threat hunt is trying to figure out who the threat actor is. Often, we might find an IOC (like an IP address or domain) that is tied to a known threat actor.  But what if we don't have that? This add-on will help figure that out...
+
+How to use:
+
+1. One approach in a threat hunt for using Navigator is to select and colorize techniques that you have found in your environment (through log analysis, forensics, etc). Say we color those all red.  Now on the ATT&CK framework, all red cells are techniques I have found. But we still don't know who the attacker is.
+
+2. Simply click on the "Layer Controls" tab, click on the "Threat Actor Analysis" button (the icon of two people silhouettes) and it will trigger a popup listing the top 10 threat actors (empirically prioritized) that MIGHT be your threat actor, based on the percentage of selected techniques that you already found that match known techniques for those threat actors. 
+
+3. Click the paint palette in the top-right of the first threat actor listed (the highest likelihood based on what you have found already) and click on a color different than what you already have on your framework (let's say yellow).
+
+4. Now you have red techniques for what you found already and yellow techniques for things you should now threat hunt for, since that threat actor is known to use those techniques.
+
+
+Disclaimer -- this is version 0.0.1, so there is a lot of validation to do to ensure the analysis is correct. There are also a number of additions I want to make. But I wanted to get this out in the wild for use and hopefully some feedback.
+
+Happy hunting!
+
+
 # ATT&CK® Navigator
 
 The ATT&CK Navigator is designed to provide basic navigation and annotation of [ATT&CK](https://attack.mitre.org) matrices, something that people are already doing today in tools like Excel.  We've designed it to be simple and generic - you can use the Navigator to visualize your defensive coverage, your red/blue team planning, the frequency of detected techniques or anything else you want to do.  The Navigator doesn't care - it just allows you to manipulate the cells in the matrix (color coding, adding a comment, assigning a numerical value, etc.).  We thought having a simple tool that everyone could use to visualize the matrix would help make it easy to use ATT&CK.
