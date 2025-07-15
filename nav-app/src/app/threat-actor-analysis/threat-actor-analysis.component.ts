@@ -22,6 +22,8 @@ export class ThreatActorAnalysisComponent {
     public selectedTechniques: string[] = [];
     public loading = false;
     public expandedDescriptions: Set<string> = new Set();
+    public showingColorPicker: string | null = null; // ID of group showing color picker
+    public availableColors: string[] = ['#ff9800', '#9c27b0', '#3f51b5', '#009688', '#795548', '#607d8b', '#e91e63', '#ff5722'];
 
     constructor(
         public dialogRef: MatDialogRef<ThreatActorAnalysisComponent>,
@@ -208,6 +210,54 @@ export class ThreatActorAnalysisComponent {
      */
     public isDescriptionExpanded(groupId: string): boolean {
         return this.expandedDescriptions.has(groupId);
+    }
+
+    /**
+     * Highlight all techniques used by a threat actor with a selected color
+     */
+    public highlightActorTechniques(group: Group, color: string): void {
+        // Get all techniques used by this actor
+        const groupTechniqueStixIds = group.used(this.data.viewModel.domainVersionID);
+        const groupTechniques = this.convertStixIdsToAttackIds(groupTechniqueStixIds);
+        
+        console.log(`Highlighting ${groupTechniques.length} techniques for ${group.name} with color ${color}`);
+        
+        // Apply color to all techniques used by this actor
+        for (const techniqueId of groupTechniques) {
+            // Find all tactic variations of this technique
+            for (const [vmKey, tvm] of this.data.viewModel.techniqueVMs.entries()) {
+                const cleanVmKey = vmKey.split('^')[0];
+                
+                if (cleanVmKey === techniqueId) {
+                    // Only color if it doesn't already have a color (preserve original colors)
+                    if (!tvm.color) {
+                        tvm.color = color;
+                    }
+                }
+            }
+        }
+        
+        // Close the dialog to show the updated matrix
+        this.dialogRef.close();
+    }
+
+    /**
+     * Toggle color picker for a threat actor
+     */
+    public toggleColorPicker(group: Group): void {
+        if (this.showingColorPicker === group.id) {
+            this.showingColorPicker = null;
+        } else {
+            this.showingColorPicker = group.id;
+        }
+    }
+
+    /**
+     * Select a color and highlight actor techniques
+     */
+    public selectColor(group: Group, color: string): void {
+        this.highlightActorTechniques(group, color);
+        this.showingColorPicker = null;
     }
 
     /**

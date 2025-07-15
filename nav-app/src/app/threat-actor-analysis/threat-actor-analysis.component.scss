@@ -159,6 +159,58 @@
                     line-height: 1;
                 }
             }
+            
+            .action-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-left: 8px;
+                position: relative;
+                
+                .highlight-button {
+                    width: 32px;
+                    height: 32px;
+                    
+                    mat-icon {
+                        font-size: 18px;
+                        width: 18px;
+                        height: 18px;
+                    }
+                    
+                    &.active {
+                        background-color: #1976d2;
+                        color: white;
+                    }
+                }
+                
+                .color-picker-dropdown {
+                    position: absolute;
+                    top: 40px;
+                    right: 0;
+                    background: white;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    padding: 8px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 4px;
+                    z-index: 1000;
+                    
+                    .color-option {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        border: 2px solid transparent;
+                        transition: border-color 0.2s ease;
+                        
+                        &:hover {
+                            border-color: #333;
+                        }
+                    }
+                }
+            }
         }
         
         .threat-actor-description {
@@ -276,6 +328,17 @@
                 
                 &:hover {
                     background-color: rgba(100, 181, 246, 0.1);
+                }
+            }
+        }
+        
+        .action-buttons {
+            .color-picker-dropdown {
+                background: #424242;
+                border-color: #616161;
+                
+                .color-option:hover {
+                    border-color: #fff;
                 }
             }
         }

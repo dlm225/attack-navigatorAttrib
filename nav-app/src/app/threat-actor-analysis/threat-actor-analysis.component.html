@@ -55,6 +55,27 @@
                                 {{ match.matchingTechniques.length }}/{{ match.totalTechniques }}
                             </div>
                         </div>
+                        <div class="action-buttons">
+                            <button 
+                                mat-mini-fab 
+                                color="primary"
+                                (click)="toggleColorPicker(match.group)"
+                                [title]="'Highlight all ' + match.totalTechniques + ' techniques used by ' + match.group.name"
+                                class="highlight-button"
+                                [class.active]="showingColorPicker === match.group.id">
+                                <mat-icon>palette</mat-icon>
+                            </button>
+                            
+                            <!-- Color picker dropdown -->
+                            <div class="color-picker-dropdown" *ngIf="showingColorPicker === match.group.id">
+                                <div class="color-option" 
+                                     *ngFor="let color of availableColors"
+                                     [style.background-color]="color"
+                                     (click)="selectColor(match.group, color)"
+                                     [title]="'Highlight with ' + color">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="threat-actor-description" *ngIf="match.group.description">
