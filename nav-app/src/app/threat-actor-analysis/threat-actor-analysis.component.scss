@@ -86,6 +86,48 @@
                     background: #4caf50;
                     color: white;
                 }
+                
+                .threat-actor-info {
+                    .threat-actor-name {
+                        color: #2e7d32; // Green for top match
+                    }
+                    
+                    .threat-actor-id {
+                        color: #4caf50; // Green for top match
+                    }
+                }
+                
+                .match-stats {
+                    .match-count {
+                        color: #666; // Darker for top match
+                    }
+                    
+                    .actor-count {
+                        color: #888; // Darker for top match
+                    }
+                }
+                
+                .threat-actor-description {
+                    p {
+                        color: #555; // Darker for top match
+                    }
+                    
+                    .expand-button {
+                        color: #2e7d32; // Green for top match
+                    }
+                }
+                
+                .matching-techniques {
+                    h4 {
+                        color: #2e7d32; // Green for top match
+                    }
+                    
+                    .technique-tag {
+                        .technique-name {
+                            color: #333; // Darker for top match
+                        }
+                    }
+                }
             }
         }
         
@@ -116,13 +158,13 @@
                     margin: 0 0 4px 0;
                     font-size: 18px;
                     font-weight: 600;
-                    color: #333;
+                    color: #fff; // White for cards 2-10
                 }
                 
                 .threat-actor-id {
                     margin: 0;
                     font-size: 14px;
-                    color: #666;
+                    color: #ccc; // Much lighter for cards 2-10
                     font-family: monospace;
                 }
             }
@@ -149,13 +191,13 @@
                 
                 .match-count {
                     font-size: 12px;
-                    color: #666;
+                    color: #bbb; // Much lighter for cards 2-10
                     margin-top: 4px;
                 }
                 
                 .actor-count {
                     font-size: 11px;
-                    color: #999;
+                    color: #aaa; // Much lighter for cards 2-10
                     line-height: 1;
                 }
             }
@@ -218,7 +260,7 @@
             
             p {
                 margin: 0 0 8px 0;
-                color: #555;
+                color: #bbb; // Much lighter for cards 2-10
                 line-height: 1.5;
                 font-size: 14px;
                 
@@ -244,7 +286,7 @@
             h4 {
                 margin: 0 0 12px 0;
                 font-size: 16px;
-                color: #333;
+                color: #ccc; // Much lighter for cards 2-10
             }
             
             .techniques-grid {
@@ -270,7 +312,7 @@
                     }
                     
                     .technique-name {
-                        color: #333;
+                        color: #aaa; // Much lighter for cards 2-10
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;

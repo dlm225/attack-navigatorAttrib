@@ -48,10 +48,10 @@
                                 [title]="match.actorCoverage.toFixed(1) + '% of this actor\'s techniques are selected'">
                                 {{ match.actorCoverage.toFixed(1) }}%
                             </div>
-                            <div class="match-count" [title]="'Matching techniques out of total selected'">
+                            <div class="match-count" [title]="'Selected Coverage: ' + match.matchingTechniques.length + ' matching techniques out of ' + selectedTechniques.length + ' total selected'">
                                 {{ match.matchingTechniques.length }}/{{ selectedTechniques.length }}
                             </div>
-                            <div class="actor-count" [title]="'Matching techniques out of actor\'s total techniques'">
+                            <div class="actor-count" [title]="'Actor Coverage: ' + match.matchingTechniques.length + ' matching techniques out of ' + match.totalTechniques + ' total techniques used by ' + match.group.name">
                                 {{ match.matchingTechniques.length }}/{{ match.totalTechniques }}
                             </div>
                         </div>
