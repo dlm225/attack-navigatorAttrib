@@ -18,8 +18,9 @@ export interface ThreatActorMatch {
 })
 export class ThreatActorAnalysisComponent {
     public topThreatActors: ThreatActorMatch[] = [];
-    public coloredTechniques: string[] = [];
+    public selectedTechniques: string[] = [];
     public loading = false;
+    public expandedDescriptions: Set<string> = new Set();
 
     constructor(
         public dialogRef: MatDialogRef<ThreatActorAnalysisComponent>,
@@ -30,17 +31,17 @@ export class ThreatActorAnalysisComponent {
     }
 
     /**
-     * Analyze threat actors based on colored techniques
+     * Analyze threat actors based on selected techniques
      */
     private analyzeThreatActors(): void {
         this.loading = true;
         
-        // Get all colored techniques from the view model
-        this.coloredTechniques = this.getColoredTechniques();
-        console.log('Colored techniques found:', this.coloredTechniques);
+        // Get all selected techniques from the view model
+        this.selectedTechniques = this.getSelectedTechniques();
+        console.log('Selected techniques found:', this.selectedTechniques);
         
-        if (this.coloredTechniques.length === 0) {
-            console.log('No colored techniques found');
+        if (this.selectedTechniques.length === 0) {
+            console.log('No selected techniques found');
             this.loading = false;
             return;
         }
@@ -64,19 +65,38 @@ export class ThreatActorAnalysisComponent {
     }
 
     /**
-     * Get all techniques that have colors applied
+     * Get all selected techniques (colored + explicitly selected)
      */
-    private getColoredTechniques(): string[] {
-        const coloredTechniques: string[] = [];
+    private getSelectedTechniques(): string[] {
+        const selectedTechniques: string[] = [];
+        const uniqueTechniques = new Set<string>();
         
+        console.log('Total techniqueVMs:', this.data.viewModel.techniqueVMs.size);
+        console.log('Selected techniques from viewModel:', Array.from(this.data.viewModel.selectedTechniques));
+        
+        // Get explicitly selected techniques
+        for (const selectedId of this.data.viewModel.selectedTechniques) {
+            const cleanTechniqueId = selectedId.split('^')[0];
+            uniqueTechniques.add(cleanTechniqueId);
+        }
+        
+        // Also include techniques that have colors applied (but aren't necessarily selected)
         for (const [techniqueId, tvm] of this.data.viewModel.techniqueVMs.entries()) {
             // Check if technique has manual color or score-based color
             if (tvm.color || (tvm.score && tvm.scoreColor)) {
-                coloredTechniques.push(techniqueId);
+                console.log(`Found colored technique: ${techniqueId}, color: ${tvm.color}, score: ${tvm.score}, scoreColor: ${tvm.scoreColor}`);
+                
+                // Extract just the technique ID part (remove tactic if present)
+                // Format is "T1234.567^tactic" or just "T1234.567"
+                const cleanTechniqueId = techniqueId.split('^')[0];
+                uniqueTechniques.add(cleanTechniqueId);
             }
         }
         
-        return coloredTechniques;
+        // Convert Set back to Array
+        selectedTechniques.push(...Array.from(uniqueTechniques));
+        
+        return selectedTechniques;
     }
 
     /**
@@ -86,30 +106,49 @@ export class ThreatActorAnalysisComponent {
         const matches: ThreatActorMatch[] = [];
         const domain = this.dataService.getDomain(this.data.viewModel.domainVersionID);
         
+        console.log('Domain:', domain);
+        console.log('Domain ID:', this.data.viewModel.domainVersionID);
+        
         if (!domain || !domain.groups) {
+            console.log('No domain or groups found');
             return matches;
         }
 
+        console.log('Number of groups:', domain.groups.length);
+
+        let groupsChecked = 0;
         for (const group of domain.groups) {
             // Skip revoked or deprecated groups
             if (group.revoked || group.deprecated) {
                 continue;
             }
 
-            // Get techniques used by this group
-            const groupTechniques = group.used(this.data.viewModel.domainVersionID);
+            // Get techniques used by this group (returns STIX IDs)
+            const groupTechniqueStixIds = group.used(this.data.viewModel.domainVersionID);
             
-            if (groupTechniques.length === 0) {
+            if (groupTechniqueStixIds.length === 0) {
                 continue;
             }
 
-            // Find intersection between colored techniques and group techniques
-            const matchingTechniques = this.coloredTechniques.filter(techniqueId => 
+            // Convert STIX IDs to ATT&CK IDs
+            const groupTechniques = this.convertStixIdsToAttackIds(groupTechniqueStixIds);
+
+            // Log first few groups for debugging
+            if (groupsChecked < 3) {
+                console.log(`Group ${group.name} uses STIX IDs:`, groupTechniqueStixIds.slice(0, 5));
+                console.log(`Group ${group.name} uses ATT&CK IDs:`, groupTechniques.slice(0, 5));
+            }
+            groupsChecked++;
+
+            // Find intersection between selected techniques and group techniques
+            const matchingTechniques = this.selectedTechniques.filter(techniqueId => 
                 groupTechniques.includes(techniqueId)
             );
 
             if (matchingTechniques.length > 0) {
                 const matchPercentage = (matchingTechniques.length / groupTechniques.length) * 100;
+                
+                console.log(`Group ${group.name} has ${matchingTechniques.length} matching techniques:`, matchingTechniques);
                 
                 matches.push({
                     group: group,
@@ -121,6 +160,44 @@ export class ThreatActorAnalysisComponent {
         }
 
         return matches;
+    }
+
+    /**
+     * Convert STIX IDs to ATT&CK IDs using the domain data
+     */
+    private convertStixIdsToAttackIds(stixIds: string[]): string[] {
+        const domain = this.dataService.getDomain(this.data.viewModel.domainVersionID);
+        const attackIds: string[] = [];
+
+        for (const stixId of stixIds) {
+            // Look for the technique in both main techniques and subtechniques
+            const technique = domain.techniques.find(t => t.id === stixId) || 
+                             domain.subtechniques.find(t => t.id === stixId);
+            
+            if (technique && technique.attackID) {
+                attackIds.push(technique.attackID);
+            }
+        }
+
+        return attackIds;
+    }
+
+    /**
+     * Toggle expanded description for a group
+     */
+    public toggleDescription(groupId: string): void {
+        if (this.expandedDescriptions.has(groupId)) {
+            this.expandedDescriptions.delete(groupId);
+        } else {
+            this.expandedDescriptions.add(groupId);
+        }
+    }
+
+    /**
+     * Check if description is expanded for a group
+     */
+    public isDescriptionExpanded(groupId: string): boolean {
+        return this.expandedDescriptions.has(groupId);
     }
 
     /**

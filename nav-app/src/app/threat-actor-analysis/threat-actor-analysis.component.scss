@@ -58,6 +58,7 @@
         
         p {
             margin: 4px 0;
+            color: #555; // Dark gray text
             
             strong {
                 color: #1976d2;
@@ -148,10 +149,26 @@
             margin-bottom: 16px;
             
             p {
-                margin: 0;
+                margin: 0 0 8px 0;
                 color: #555;
                 line-height: 1.5;
                 font-size: 14px;
+                
+                &.expanded {
+                    white-space: pre-wrap;
+                }
+            }
+            
+            .expand-button {
+                font-size: 12px;
+                min-height: 24px;
+                padding: 4px 8px;
+                margin-top: 4px;
+                color: #1976d2;
+                
+                &:hover {
+                    background-color: rgba(25, 118, 210, 0.1);
+                }
             }
         }
         
@@ -201,8 +218,12 @@
     .analysis-summary {
         background: #424242;
         
-        p strong {
-            color: #64b5f6;
+        p {
+            color: #bbb; // Dark gray text for dark theme
+            
+            strong {
+                color: #64b5f6;
+            }
         }
     }
     
@@ -220,9 +241,22 @@
         }
         
         .threat-actor-id,
-        .match-count,
-        .threat-actor-description p {
+        .match-count {
             color: #bbb;
+        }
+        
+        .threat-actor-description {
+            p {
+                color: #bbb;
+            }
+            
+            .expand-button {
+                color: #64b5f6;
+                
+                &:hover {
+                    background-color: rgba(100, 181, 246, 0.1);
+                }
+            }
         }
         
         .technique-tag {
