@@ -13,6 +13,7 @@ import { ChangelogComponent } from '../changelog/changelog.component';
 import { Subscription, forkJoin } from 'rxjs';
 import * as globals from '../utils/globals';
 import { LayerInformationComponent } from '../layer-information/layer-information.component';
+import { ThreatActorAnalysisComponent } from '../threat-actor-analysis/threat-actor-analysis.component';
 import { isSafari } from '../utils/utils';
 
 @Component({
@@ -314,6 +315,21 @@ export class TabsComponent implements AfterViewInit {
         } else if (dialogName == 'layers') {
             this.dialog.open(LayerInformationComponent, settings);
         }
+    }
+
+    /**
+     * Open threat actor analysis dialog
+     * @param {ViewModel} viewModel the viewModel to analyze
+     */
+    public openThreatActorAnalysis(viewModel: ViewModel) {
+        const settings = { 
+            width: '800px',
+            maxWidth: '90vw',
+            panelClass: this.userTheme, 
+            autoFocus: false, 
+            data: { viewModel: viewModel, theme: this.userTheme }
+        };
+        this.dialog.open(ThreatActorAnalysisComponent, settings);
     }
 
     /**

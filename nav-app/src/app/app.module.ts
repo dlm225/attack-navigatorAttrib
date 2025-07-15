@@ -48,6 +48,7 @@ import { LayerInformationComponent } from './layer-information/layer-information
 import { ChangelogComponent } from './changelog/changelog.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ListInputComponent } from './list-input/list-input.component';
+import { ThreatActorAnalysisComponent } from './threat-actor-analysis/threat-actor-analysis.component';
 import { ConfigService } from './services/config.service';
 
 @NgModule({
@@ -72,6 +73,7 @@ import { ConfigService } from './services/config.service';
         LayerInformationComponent,
         ChangelogComponent,
         ListInputComponent,
+        ThreatActorAnalysisComponent,
         LayerSettingsComponent,
     ],
     imports: [

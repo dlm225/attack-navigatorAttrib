@@ -146,6 +146,18 @@ o888     88 o888   888o 8888o  88  88  888  88  888    888 o888   888o 888      
                         </span>
                     </div>
                 </div>
+                <!-- threat actor analysis -->
+                <div *ngIf="configService.getFeature('threat_actor_analysis') && isControlIncluded('layer_controls','threat_actor_analysis')" class="control-row-item">
+                    <div
+                        class="control-row-button noselect"
+                        (click)="openThreatActorAnalysis()"
+                        matTooltipPosition="below"
+                        matTooltip="analyze threat actors">
+                        <span class="control-label" *ngIf="showControlLabels['layer']">{{getControlDisplayName('layer_controls','threat_actor_analysis') | titlecase}}</span>
+                        <span class="material-icons" alt="threat actor analysis">group</span>
+                    </div>
+                </div>
+
                 <!-- export, save, and render features -->
                 <div *ngIf="configService.getFeature('download_layer') && isControlIncluded('layer_controls','download_layer')" class="control-row-item">
                     <div class="control-row-button dropdown noselect" (click)="handleExportDropdown()" matTooltipPosition="below" matTooltip="export">

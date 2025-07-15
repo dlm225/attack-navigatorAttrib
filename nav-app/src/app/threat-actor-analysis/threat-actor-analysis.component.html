@@ -1,0 +1,70 @@
+<div class="threat-actor-analysis-dialog mat-dialog">
+    <h1 mat-dialog-title>Threat Actor Analysis</h1>
+    
+    <mat-dialog-content class="content">
+        <div *ngIf="loading" class="loading-container">
+            <mat-spinner diameter="50"></mat-spinner>
+            <p>Analyzing threat actors...</p>
+        </div>
+
+        <div *ngIf="!loading && coloredTechniques.length === 0" class="no-data">
+            <mat-icon class="warning-icon">warning</mat-icon>
+            <h3>No Colored Techniques Found</h3>
+            <p>Please color some techniques in the matrix to analyze matching threat actors.</p>
+        </div>
+
+        <div *ngIf="!loading && coloredTechniques.length > 0 && topThreatActors.length === 0" class="no-data">
+            <mat-icon class="info-icon">info</mat-icon>
+            <h3>No Matching Threat Actors</h3>
+            <p>No threat actors found that use the {{ coloredTechniques.length }} colored technique(s).</p>
+        </div>
+
+        <div *ngIf="!loading && topThreatActors.length > 0" class="results">
+            <div class="analysis-summary">
+                <p><strong>{{ coloredTechniques.length }}</strong> colored technique(s) analyzed</p>
+                <p><strong>{{ topThreatActors.length }}</strong> matching threat actor(s) found</p>
+            </div>
+
+            <div class="threat-actors-list">
+                <div 
+                    *ngFor="let match of topThreatActors; let i = index" 
+                    class="threat-actor-card"
+                    [class.top-match]="i === 0">
+                    
+                    <div class="threat-actor-header">
+                        <div class="rank">{{ i + 1 }}</div>
+                        <div class="threat-actor-info">
+                            <h3 class="threat-actor-name">{{ match.group.name }}</h3>
+                            <p class="threat-actor-id">{{ match.group.attackID }}</p>
+                        </div>
+                        <div class="match-stats">
+                            <div class="match-percentage">{{ match.matchPercentage.toFixed(1) }}%</div>
+                            <div class="match-count">{{ match.matchingTechniques.length }}/{{ match.totalTechniques }}</div>
+                        </div>
+                    </div>
+
+                    <div class="threat-actor-description" *ngIf="match.group.description">
+                        <p>{{ match.group.description | slice:0:200 }}<span *ngIf="match.group.description.length > 200">...</span></p>
+                    </div>
+
+                    <div class="matching-techniques">
+                        <h4>Matching Techniques ({{ match.matchingTechniques.length }})</h4>
+                        <div class="techniques-grid">
+                            <div 
+                                *ngFor="let techniqueId of match.matchingTechniques" 
+                                class="technique-tag"
+                                [title]="getTechniqueName(techniqueId)">
+                                <span class="technique-id">{{ techniqueId }}</span>
+                                <span class="technique-name">{{ getTechniqueName(techniqueId) | slice:0:30 }}<span *ngIf="getTechniqueName(techniqueId).length > 30">...</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="close()">Close</button>
+    </mat-dialog-actions>
+</div>

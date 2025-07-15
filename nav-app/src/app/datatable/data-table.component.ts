@@ -21,6 +21,7 @@ export class DataTableComponent implements AfterViewInit, OnDestroy {
 
     @Input() viewModel: ViewModel; // ViewModel being used by this data-table
     @Input() currentDropdown: string = ''; // current dropdown menu
+    @Input() tabsComponent: TabsComponent; // reference to parent tabs component
 
     @Output() dropdownChange = new EventEmitter<any>();
     @Output() onScroll = new EventEmitter<any>();
@@ -702,5 +703,12 @@ export class DataTableComponent implements AfterViewInit, OnDestroy {
     public openLayerSettings(): void {
             this.viewModel.sidebarOpened = this.viewModel.sidebarContentType !== 'layerSettings' ? true : !this.viewModel.sidebarOpened;
             this.viewModel.sidebarContentType = 'layerSettings';
+    }
+
+    /**
+     * Open threat actor analysis dialog
+     */
+    public openThreatActorAnalysis(): void {
+        this.tabsComponent.openThreatActorAnalysis(this.viewModel);
     }
 }

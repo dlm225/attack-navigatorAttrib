@@ -57,6 +57,7 @@
         ]},
         {"name": "layer_controls", "enabled": true, "description": "Disable to disable all subfeatures", "subfeatures": [
             {"name": "layer_settings", "enabled": true, "display_name": "layer settings", "description": "Disable to remove the layer info (name, description and layer metadata) panel from the interface. Note that the layer can still be renamed in the tab."},
+            {"name": "threat_actor_analysis", "enabled": true, "display_name": "threat actor analysis", "description": "Disable to remove the threat actor analysis button that shows the top 10 threat actors matching colored techniques."},
             {"name": "download_layer", "enabled": true, "display_name": "export", "description": "Disable to remove the button to download the layer."},
             {"name": "filters", "enabled": true, "display_name": "filters", "description": "Disable to remove the filters panel from interface."},
             {"name": "sorting", "enabled": true, "display_name": "sorting", "description": "Disable to remove the sorting button from the interface."},
